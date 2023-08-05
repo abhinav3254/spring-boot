@@ -1,9 +1,26 @@
 package com.example;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Aliean {
 	private int aId;
 	private String aName;
 	private String tech;
+	@Autowired
+	private Laptop laptop;
+	
+	public Laptop getLaptop() {
+		return laptop;
+	}
+
+	public void setLaptop(Laptop laptop) {
+		this.laptop = laptop;
+	}
+
+	public Aliean() { System.out.println("Constructor called"); }
+	
 	public int getaId() {
 		return aId;
 	}
@@ -26,4 +43,10 @@ public class Aliean {
 	public String toString() {
 		return "Aliean [aId=" + aId + ", aName=" + aName + ", tech=" + tech + "]";
 	}
+	
+	public void show() {
+		System.out.println("Inside show method");
+		laptop.compile();
+	}
+	
 }

@@ -12,8 +12,13 @@ public class FirstProjectApplication {
 		System.out.println("hello spring-boot");
 		// Dependecy injection
 		Aliean aliean = configurableApplicationContext.getBean(Aliean.class);
-		
+		Aliean aliean2 = configurableApplicationContext.getBean(Aliean.class);
+		// Note only one object is created because constructor is called only once
+		// because it uses a pattern called as singleton pattern as by default
 		System.out.println(aliean.toString());
+		//System.out.println(aliean2.toString());
+		
+		aliean.show();
 	}
 
 }
