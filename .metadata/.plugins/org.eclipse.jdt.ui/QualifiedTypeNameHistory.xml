@@ -5,5 +5,14 @@
     <fullyQualifiedTypeName name="com.example.Aliean"/>
     <fullyQualifiedTypeName name="com.example.Laptop"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Controller"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RestController"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="com.example.entity.Course"/>
+    <fullyQualifiedTypeName name="com.example.services.CourseServiceImplementation"/>
+    <fullyQualifiedTypeName name="com.example.services.CourseService"/>
     <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="org.springframework.stereotype.Service"/>
 </qualifiedTypeNameHistroy>

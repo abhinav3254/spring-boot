@@ -1,0 +1,37 @@
+package com.example.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.entity.Course;
+import com.example.services.CourseService;
+
+@RestController
+public class MyController {
+	// Depenedecy Injection
+	@Autowired
+	private CourseService courseService;
+	
+	/*
+	 * Here we did loose coupling if we want to change to anything 
+	 * in the course then we don't have to disturb this controller class
+	*/
+	
+	@GetMapping("/")
+	public String defaultHome() {
+		return "This is Default Home";
+	} 
+	@GetMapping("/home")
+	public String homePage() {
+		return "This is Home Page";
+	}
+	
+	// Get the courses
+	@GetMapping("/courses")
+	public List<Course> getCourses() {
+		return courseService.getCourses();
+	}
+}

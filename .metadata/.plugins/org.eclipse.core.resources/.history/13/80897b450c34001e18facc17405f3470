@@ -1,0 +1,14 @@
+package com.example.services;
+
+import java.util.List;
+import com.example.entity.Course;
+
+
+public interface CourseService {
+	// here we doing this way for loose coupling
+	public List<Course> getCourses();
+	// getting course by id
+	public Course getCourse(long courseId);
+	// adding new course
+	public Course addCourse();
+}
