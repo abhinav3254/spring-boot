@@ -1,16 +1,59 @@
 package com.example.services;
 
-import java.util.ArrayList;
+
+
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.CourseDao;
 import com.example.entity.Course;
 
 // This that this class work on service layer
 @Service
 public class CourseServiceImplementation implements CourseService {
+	
+	@Autowired
+	private CourseDao courseDao;
 
+	@Override
+	public List<Course> getCourses() {
+		// TODO Auto-generated method stub
+		return courseDao.findAll();
+	}
+
+	@Override
+	public Course getCourse(long courseId) {
+		// TODO Auto-generated method stub
+		return courseDao.getOne(courseId);
+	}
+
+	@Override
+	public Course addCourse(Course course) {
+		// TODO Auto-generated method stub
+		courseDao.save(course);
+		return course;
+	}
+
+	@Override
+	public Course updateCourse(Course course) {
+		// TODO Auto-generated method stub
+		courseDao.save(course);
+		return course;
+	}
+
+	@Override
+	public void deleteCourse(long id) {
+		// TODO Auto-generated method stub
+		Course course = courseDao.getOne(id);
+		courseDao.delete(course);
+		
+	}
+	
+
+	/*
+	
 	private List<Course> list;
 	
 	public CourseServiceImplementation() {
@@ -43,4 +86,27 @@ public class CourseServiceImplementation implements CourseService {
 		list.add(course);
 		return course;
 	}
+
+	@Override
+	public Course updateCourse(Course course) {
+		// TODO Auto-generated method stub
+		list.forEach(e->{
+			if (e.getId() == course.getId()) {
+				e.setTitle(course.getTitle());
+				e.setIsbn(course.getIsbn());
+				e.setPageCount(course.getIsbn());
+				e.setStatus(course.getStatus());
+				e.setShortDescription(course.getShortDescription());
+			}
+		});
+		return course;
+	}
+
+	@Override
+	public void deleteCourse(long id) {
+		// TODO Auto-generated method stub
+		list = this.list.stream().filter(e->e.getId()!=id).collect(Collectors.toList());
+		
+	}
+	*/
 }

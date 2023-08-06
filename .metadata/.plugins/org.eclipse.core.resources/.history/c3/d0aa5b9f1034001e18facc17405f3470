@@ -1,0 +1,46 @@
+package com.example.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.entity.Course;
+
+// This that this class work on service layer
+@Service
+public class CourseServiceImplementation implements CourseService {
+
+	private List<Course> list;
+	
+	public CourseServiceImplementation() {
+		super();
+		list = new ArrayList<>();
+		list.add(new Course(1,"Unlocking Android",1933988673,416,"Unlocking Android: A Developer's Guide provides concise, hands-on instruction for the Android operating system and development tools. This book teaches important architectural concepts in a straightforward writing style and builds on this with practical and useful examples throughout.","PUBLISH"));
+		list.add(new Course(2,"Android in Action, Second Edition",1935182722,592,"This is second book","PUBLISH"));
+		
+	}
+
+	@Override
+	public List<Course> getCourses() {
+		return list;
+	}
+	
+	@Override
+	public Course getCourse(long courseId) {
+		Course course = null;
+		for (Course c:list) {
+			if (c.getId() == courseId) {
+				course = c;
+				break;
+			}
+		}
+		return course;
+	}
+
+	@Override
+	public Course addCourse(Course course) {
+		list.add(course);
+		return course;
+	}
+}

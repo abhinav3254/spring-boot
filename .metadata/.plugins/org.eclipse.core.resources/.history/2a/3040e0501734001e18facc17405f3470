@@ -1,0 +1,4 @@
+# setting up database configuration:mysql
+
+
+spring.datasource.url=mysql://localhost:3306/book

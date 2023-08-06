@@ -1,11 +1,23 @@
 package com.example.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Course {
+	@Id
+	@Column(name="p_id")
 	private long id;
+	@Column(name="p_title")
 	private String title;
+	@Column(name="p_isbn")
 	private long isbn;
+	@Column(name="p_count")
 	private long pageCount;
+	@Column(name="p_desc")
 	private String shortDescription;
+	@Column(name="p_status")
 	private String status;
 	
 	public Course() {
