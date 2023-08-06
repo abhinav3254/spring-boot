@@ -10609,3 +10609,12 @@ java.lang.NullPointerException: Cannot invoke "String.length()" because "typeSig
 	at java.base/java.util.concurrent.ForkJoinPool.scan(ForkJoinPool.java:1655)
 	at java.base/java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1622)
 	at java.base/java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:165)
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-08-06 12:49:35.103
+!MESSAGE Classpath changed for project: JWT
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-08-06 12:49:35.103
+!MESSAGE Boot project ADDED: JWT
+
+!ENTRY org.springframework.tooling.boot.ls 1 0 2023-08-06 12:49:36.918
+!MESSAGE Classpath changed for project: JWT
