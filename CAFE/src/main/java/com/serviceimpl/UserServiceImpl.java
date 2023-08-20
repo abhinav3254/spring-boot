@@ -1,7 +1,10 @@
 package com.serviceimpl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import com.jwt.JwtUtils;
 import com.pojo.User;
 import com.service.UserService;
 import com.utils.CafeUtils;
+import com.wrapper.UserWrapper;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +38,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	JwtUtils jwtUtils;
+	
+	@Autowired
+	JwtFilter jwtFilter;
 	
 	@Autowired
 	CustomerUserDetailsService customerUserDetailsService;
@@ -111,7 +118,46 @@ public class UserServiceImpl implements UserService {
 		return new ResponseEntity<String>("{\"message\":\""+"Bad Credentials."+"\"}",HttpStatus.BAD_REQUEST);
 		
 	}
+
+	@Override
+	public ResponseEntity<List<UserWrapper>> getAllUser() {
+		try {
+			
+			if (jwtFilter.isAdmin()) {
+				return new ResponseEntity<>(userDao.getAllUser(),HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(new ArrayList<>(),HttpStatus.UNAUTHORIZED);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<>(new ArrayList<>(),HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 	
-	
+
+	@Override
+	public ResponseEntity<String> update(Map<String, String> requestMap) {
+		try {
+			
+			if (jwtFilter.isAdmin()) {
+				Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
+				if (!optional.isEmpty()) {
+					userDao.updateStatus(requestMap.get("status"),Integer.parseInt(requestMap.get("id")));
+					return CafeUtils.getResponseEntity("user status updated successfully", HttpStatus.OK);
+				} else {
+					return CafeUtils.getResponseEntity("User Id doesn't exist", HttpStatus.OK);
+				}
+			} else {
+				return CafeUtils.getResponseEntity(CafeConstants.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 
 }
