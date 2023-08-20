@@ -22,6 +22,7 @@ import com.jwt.JwtUtils;
 import com.pojo.User;
 import com.service.UserService;
 import com.utils.CafeUtils;
+import com.utils.EmailUtils;
 import com.wrapper.UserWrapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	JwtFilter jwtFilter;
+	
+	@Autowired
+	EmailUtils emailUtils;
 	
 	@Autowired
 	CustomerUserDetailsService customerUserDetailsService;
@@ -145,6 +149,7 @@ public class UserServiceImpl implements UserService {
 				Optional<User> optional = userDao.findById(Integer.parseInt(requestMap.get("id")));
 				if (!optional.isEmpty()) {
 					userDao.updateStatus(requestMap.get("status"),Integer.parseInt(requestMap.get("id")));
+					sendMailToAllAdmin(requestMap.get("status"),optional.get().getEmail(),userDao.getAllAdmin());
 					return CafeUtils.getResponseEntity("user status updated successfully", HttpStatus.OK);
 				} else {
 					return CafeUtils.getResponseEntity("User Id doesn't exist", HttpStatus.OK);
@@ -158,6 +163,19 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	private void sendMailToAllAdmin(String status, String user, List<String> allAdmin) {
+		allAdmin.remove(jwtFilter.getCurrentUser());
+		if (status != null && status.equalsIgnoreCase("true")) {
+			emailUtils.sendSimpleMessage(jwtFilter.getCurrentUser()
+			,"Account Enabled","USER :- "+user+" \n is approved by \nADMIN :- "+jwtFilter.getCurrentUser()
+			,allAdmin);
+		} else {
+			emailUtils.sendSimpleMessage(jwtFilter.getCurrentUser()
+					,"Account Disabled","USER :- "+user+" \n is disabled by \nADMIN :- "+jwtFilter.getCurrentUser()
+					,allAdmin);
+		}
 	}
 
 }
