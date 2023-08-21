@@ -23,4 +23,11 @@ public interface UserDao extends JpaRepository<User, Integer> {
 	@Modifying
 	Integer updateStatus(@Param("status") String status,@Param("id") Integer id);
 	
+	/*
+	 * we don't need any implementation for this method bcz
+	 * if we write findByPojo class member variable automatically
+	 * it is done by JPA
+	 */
+	User findByEmail(String email);
+	
 }
