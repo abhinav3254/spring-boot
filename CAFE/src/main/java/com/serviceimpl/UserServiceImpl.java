@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.constants.CafeConstants;
 import com.dao.UserDao;
+import com.google.common.base.Strings;
 import com.jwt.CustomerUserDetailsService;
 import com.jwt.JwtFilter;
 import com.jwt.JwtUtils;
@@ -176,6 +177,53 @@ public class UserServiceImpl implements UserService {
 					,"Account Disabled","USER :- "+user+" \n is disabled by \nADMIN :- "+jwtFilter.getCurrentUser()
 					,allAdmin);
 		}
+	}
+
+	@Override
+	public ResponseEntity<String> checkToken() {
+		return CafeUtils.getResponseEntity("true", HttpStatus.OK);
+	}
+
+	
+	@Override
+	public ResponseEntity<String> changePassword(Map<String, String> requestMap) {
+		try {
+			User userObj = userDao.findByEmail(jwtFilter.getCurrentUser());
+			if (!userObj.equals(null)) {
+				if (userObj.getPassword().equals(requestMap.get("oldPassword"))) {
+					userObj.setPassword(requestMap.get("newPassword"));
+					userDao.save(userObj);
+					return CafeUtils.getResponseEntity("Password Updated Successfully", HttpStatus.OK);
+				}
+				
+				return CafeUtils.getResponseEntity("Incorrect Old Password", HttpStatus.BAD_REQUEST);
+			}
+			return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
+		try {
+			User user = userDao.findByEmail(requestMap.get("email"));
+			
+			/* Here we are not saying that your email is not registered with us
+			 * bcz this will tell the hacker that this email is registered with us
+			 * incase if wrong email then user will not find the email
+			 * only authentic person will get mail so in every case we will send mail
+			 * but actual user will get it
+			 * */
+			if(!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail())) {
+				emailUtils.forgotMail(user.getEmail(), "Credentails By Abhinav-Cafe-Management", user.getPassword());
+			}
+			return CafeUtils.getResponseEntity("Check Your Mail For Credentails", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
