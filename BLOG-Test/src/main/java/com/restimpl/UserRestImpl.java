@@ -26,4 +26,13 @@ public class UserRestImpl implements UserRest {
 		return new ResponseEntity<String>("something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@Override
+	public ResponseEntity<String> logIn(Map<String, String> requestMap) {
+		try {
+			return userService.logIn(requestMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<String>("SOMETHING WENT WRONG",HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }
