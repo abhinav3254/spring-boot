@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.dao.UserDao;
+import com.jwt.JwtFilter;
 import com.jwt.JwtUtils;
 import com.jwt.MyUserDetailsService;
 import com.pojo.User;
@@ -32,6 +33,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private JwtUtils jwtUtils;
+	
+	public String currentUserEmail;
+	
 
 	@Override
 	public ResponseEntity<String> signUp(Map<String, String> requestMap) {
@@ -83,6 +87,8 @@ public class UserServiceImpl implements UserService {
 			if (authentication.isAuthenticated()) {
 				if (myUserDetailsService.getUserDetails().getStatus().equalsIgnoreCase("true")) {
 					System.out.println("Hello "+myUserDetailsService.getUserDetails().getName());
+					System.out.println("Email is :- "+myUserDetailsService.getUserDetails().getEmail());
+					currentUserEmail = myUserDetailsService.getUserDetails().getEmail();
 					return new ResponseEntity<String>("Token is :- "+jwtUtils.generateToken(myUserDetailsService.getUserDetails().getEmail(), myUserDetailsService.getUserDetails().getRole()),HttpStatus.OK);
 				} else {
 					return new ResponseEntity<>("wait for admin approval",HttpStatus.OK);
