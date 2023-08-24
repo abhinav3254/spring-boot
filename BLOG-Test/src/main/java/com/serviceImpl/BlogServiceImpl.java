@@ -1,10 +1,12 @@
 package com.serviceImpl;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -63,6 +65,44 @@ public class BlogServiceImpl implements BlogService {
 		
 		return blog;
 		
+	}
+
+	@Override
+	public ResponseEntity<List<Blog>> getAllBlog() {
+		try {
+			List<Blog> blogList = blogDao.getAllBlog();
+			return new ResponseEntity<List<Blog>>(blogList,HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<List<Blog>>(new ArrayList<Blog>(),HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<Blog> getBlogById(String id) {
+		try {
+			
+			Blog blog = blogDao.getBlogById(Integer.parseInt(id));
+			return new ResponseEntity<Blog>(blog,HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<Blog>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public ResponseEntity<String> deleteById(String id) {
+		try {
+			 blogDao.deleteById(Integer.parseInt(id));
+				return new ResponseEntity<String>("Deleted "+id,HttpStatus.OK);
+		} catch (EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("can't find blog by id = "+id,HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<String>("something went wrong",HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
