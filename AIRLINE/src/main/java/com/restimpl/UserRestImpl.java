@@ -19,11 +19,21 @@ public class UserRestImpl implements UserRest {
 	@Override
 	public ResponseEntity<String> signUp(Map<String, String> requestMap) {
 		try {
-			userService.signUp(requestMap);
+			return userService.signUp(requestMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return Constants.somethingWentWrong("something went wrong!"); 
+		return Constants.somethingWentWrong("something went wrong! User Rest Impl"); 
+	}
+
+	@Override
+	public ResponseEntity<String> logIn(Map<String, String> requestMap) {
+		try {
+			return userService.logIn(requestMap);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Constants.somethingWentWrong("something went wrong! User Rest Impl"); 
 	}
 
 }
