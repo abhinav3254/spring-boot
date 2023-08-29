@@ -9,7 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.pojo.UserRepo;
+import com.dao.UserRepo;
+
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -23,7 +24,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		user = userRepo.findUserByUsername(username);
 		if (user != null) {
-			return new User(user.getEmail(),user.getPassword(),new ArrayList<>());
+			return new User(user.getUsername(),user.getPassword(),new ArrayList<>());
 		} else {
 			throw new UsernameNotFoundException("User Not Find By the email"+username);
 		}
