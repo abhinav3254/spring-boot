@@ -1,10 +1,10 @@
 package com.serviceimpl;
 
 import com.constants.Constants;
+import com.dao.UserRepo;
 import com.jwt.JwtUtils;
 import com.jwt.MyUserDetailsService;
 import com.pojo.User;
-import com.pojo.UserRepo;
 import com.service.UserService;
 
 import java.text.SimpleDateFormat;
